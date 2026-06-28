@@ -1,3 +1,15 @@
+<div align="center">
+  <h1>JFunction</h1>
+  <p><strong>Java 26 轻量级函数式编程库</strong></p>
+
+  <p>
+    <a href="#"><img src="https://img.shields.io/badge/Java-26-blue.svg" alt="Java Version"/></a>
+    <a href="#"><img src="https://img.shields.io/badge/Maven-3.9+-green.svg" alt="Maven"/></a>
+    <a href="#"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License"/></a>
+    <a href="#"><img src="https://img.shields.io/badge/JUnit-5.11.4-orange.svg" alt="JUnit"/></a>
+  </p>
+</div>
+
 # JFunction
 
 一个基于 **Java 26** 新特性构建的轻量级函数式编程库。
@@ -9,13 +21,17 @@ JFunction 利用 sealed interface、record pattern、primitive type patterns、`
 - **JDK 26**（需启用 `--enable-preview`）
 - **Maven 3.9+**
 
-## 快速开始
+## 安装依赖
 
-```bash
-mvn clean test
+```xml
+<dependency>
+    <groupId>io.github.tuyucheng777</groupId>
+    <artifactId>jfunction</artifactId>
+    <version>1.0.0</version>
+</dependency>
 ```
 
-## 模块一览
+## 核心类
 
 | 包 | 核心类型 | 说明 |
 |---|---|---|
