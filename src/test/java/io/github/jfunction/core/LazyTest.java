@@ -22,8 +22,74 @@ class LazyTest {
     }
 
     @Test
+    void ofValueIsImmediatelyAvailable() {
+        var lazy = Lazy.of("direct");
+        assertEquals("direct", lazy.get());
+        assertTrue(lazy.isInitialized());
+    }
+
+    @Test
     void mapDefersEvaluation() {
-        var lazy = Lazy.of(() -> 10).map(n -> n * 2);
+        var counter = new int[]{0};
+        var lazy = Lazy.of(() -> {
+            counter[0]++;
+            return 10;
+        }).map(n -> n * 2);
+
+        assertEquals(0, counter[0]);
         assertEquals(20, lazy.get());
+        assertEquals(1, counter[0]);
+    }
+
+    @Test
+    void mapCachesResult() {
+        var counter = new int[]{0};
+        var lazy = Lazy.of(() -> {
+            counter[0]++;
+            return 5;
+        }).map(n -> n + 1);
+
+        assertEquals(6, lazy.get());
+        assertEquals(6, lazy.get());
+        assertEquals(1, counter[0]);
+    }
+
+    @Test
+    void flatMapDefersEvaluation() {
+        var counter = new int[]{0};
+        var lazy = Lazy.of(() -> {
+            counter[0]++;
+            return 3;
+        }).flatMap(n -> Lazy.of(() -> n * 10));
+
+        assertEquals(0, counter[0]);
+        assertEquals(30, lazy.get());
+        assertEquals(1, counter[0]);
+    }
+
+    @Test
+    void flatMapCachesResult() {
+        var counter = new int[]{0};
+        var lazy = Lazy.of(() -> {
+            counter[0]++;
+            return 7;
+        }).flatMap(n -> Lazy.of(n + 1));
+
+        assertEquals(8, lazy.get());
+        assertEquals(8, lazy.get());
+        assertEquals(1, counter[0]);
+    }
+
+    @Test
+    void isInitializedBeforeAndAfter() {
+        var lazy = Lazy.of(() -> "hello");
+        assertFalse(lazy.isInitialized());
+        lazy.get();
+        assertTrue(lazy.isInitialized());
+    }
+
+    @Test
+    void nullSupplierThrows() {
+        assertThrows(NullPointerException.class, () -> Lazy.of((java.util.function.Supplier<?>) null));
     }
 }
